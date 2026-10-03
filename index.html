@@ -106,7 +106,7 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
 .gallery-label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:12px}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
 .gallery figure{margin:0;position:relative;border-radius:8px;overflow:hidden;background:var(--line);aspect-ratio:4/3;cursor:zoom-in}
-.gallery figure.wide{grid-column:span 2;aspect-ratio:auto}
+.gallery figure.wide{grid-column:span 2;aspect-ratio:8/3}
 @media (max-width:560px){.gallery{grid-template-columns:1fr 1fr}.gallery figure.wide{grid-column:span 2}}
 @media (max-width:380px){.gallery{grid-template-columns:1fr}.gallery figure.wide{grid-column:span 1}}
 .gallery button{all:unset;display:block;width:100%;height:100%;cursor:zoom-in}
@@ -242,19 +242,19 @@ const ROUTES = [
    pros:["Most famous sights of any route","Easiest trains and subways","No language worries in London"],
    cons:["Most expensive places to stay","Over the $4,000 cap even at the low end"],
    photos:[
-    ["London","Big_Ben_%26_Houses_of_Parliament_(Along_The_River_Thames).jpg","Big Ben and Parliament on the Thames",true],
-    ["London","Big_Ben_and_Westminster_Bridge_at_night.jpg","Westminster Bridge at night"],
+    ["London","Big_Ben_%26_Houses_of_Parliament_(Along_The_River_Thames).jpg","Big Ben and Parliament on the Thames"],
+    ["London","Big_Ben_and_Westminster_Bridge_at_night.jpg","Westminster Bridge at night",true],
     ["London","Fruit_and_Vegetable_Stall,_Borough_Market,_London_SE1_-_geograph.org.uk_-_4725576.jpg","Food stalls at Borough Market"],
     ["London","%22The_Shard%22_from_Horizon_22._Bishopsgate_London.jpg","The view from Horizon 22"],
     ["London","British_Museum_Great_Court,_London,_UK_-_Diliff.jpg","British Museum Great Court"],
     ["London","Hintze_Hall_from_steps_with_whale.jpg","Blue whale at the Natural History Museum"],
     ["Train","Eurostar_at_St_Pancras_railway_station.jpg","Eurostar at St Pancras"],
-    ["Paris","1000_Eiffel_tower_night_illumination_by_Pierre_Bideau_in_Paris_Photo_by_Giles_Laurent.jpg","Eiffel Tower lit up at night",true],
+    ["Paris","1000_Eiffel_tower_night_illumination_by_Pierre_Bideau_in_Paris_Photo_by_Giles_Laurent.jpg","Eiffel Tower lit up at night"],
     ["Paris","Eiffel_Tower,_view_from_the_Trocadero,_1_July_2008.jpg","Eiffel Tower from Trocadéro"],
     ["Paris","Basilique_du_Sacr%C3%A9-C%C5%93ur_de_Montmartre_-_Paris_-_GT-01_-_2024.jpg","Sacré Cœur on top of Montmartre"],
     ["Paris","Catacombes_de_Paris_edit.jpg","Inside the Paris Catacombs"],
     ["Paris","Louvre_Pyramid_(Unsplash).jpg","The Louvre pyramid"],
-    ["Versailles","Chateau_Versailles_Galerie_des_Glaces.jpg","Hall of Mirrors at Versailles"]
+    ["Versailles","Chateau_Versailles_Galerie_des_Glaces.jpg","Hall of Mirrors at Versailles",true]
    ]},
  { id:"opt2", num:"ROUTE 02", name:"Prague, Vienna & Budapest", sub:"Central Europe, three countries",
    chips:["46 to 52°F","14 to 16 hr flight","$3,850 to $4,200","Trains 2.5 to 4 hr"],
@@ -268,12 +268,12 @@ const ROUTES = [
    pros:["Your money goes the furthest here","Three countries, all linked by easy trains","Hot outdoor baths feel great in cold weather"],
    cons:["Coldest route, so winter layers are a must","Longest flight time from Cleveland"],
    photos:[
-    ["Prague","Prag,_Teynkirche_--_2019_--_6584.jpg","Týn Church over Old Town Square",true],
-    ["Prague","Charles_Bridge_(Karl%C5%AFv_most),_Vltava_River,_Prague,_2015.jpg","Charles Bridge on the Vltava"],
+    ["Prague","Prag,_Teynkirche_--_2019_--_6584.jpg","Týn Church over Old Town Square"],
+    ["Prague","Charles_Bridge_(Karl%C5%AFv_most),_Vltava_River,_Prague,_2015.jpg","Charles Bridge on the Vltava",true],
     ["Prague","The_Castle_and_Charles_Bridge,_Prague_-_7982.jpg","Prague Castle above the river"],
-    ["Prague","Prague_Vltava_pano_-_Oct_2010.jpg","The Vltava riverfront"],
+    ["Prague","Prague_Vltava_pano_-_Oct_2010.jpg","The Vltava riverfront",true],
     ["Prague","Golden_Lane_Prague_Castle_1.JPG","Golden Lane inside the castle"],
-    ["Vienna","Sch%C3%B6nbrunn_Palace,_seen_from_behind_the_Neptune_fountain_(Vienna,_Austria).jpg","Schönbrunn Palace",true],
+    ["Vienna","Sch%C3%B6nbrunn_Palace,_seen_from_behind_the_Neptune_fountain_(Vienna,_Austria).jpg","Schönbrunn Palace"],
     ["Vienna","Wien,_Stephansdom_--_2018_--_3060.jpg","St. Stephen's Cathedral"],
     ["Vienna","Wiener_Riesenrad_im_Prater_04.jpg","The Ferris wheel at Prater"],
     ["Vienna","Wiener_Schnitzel_vom_Kalb_im_Bellaria_Wien.jpg","Wiener Schnitzel"],
@@ -297,16 +297,16 @@ const ROUTES = [
     ["Vienna","Hofburg_Imperial_Palace,_Vienna.jpg","Hofburg Palace"],
     ["Vienna","Caf%C3%A9_Central_interior,_Vienna.jpg","Inside Café Central"],
     ["Vienna","Wien,_Prater,_Riesenrad_--_2018_--_3165.jpg","Prater park"],
-    ["Lake Bled","Bled_island,_bled,_slovenia.jpg","The island church on Lake Bled",true],
+    ["Lake Bled","Bled_island,_bled,_slovenia.jpg","The island church on Lake Bled"],
     ["Lake Bled","Pletna_(traditional_wooden_boat_used_for_transportation_to_Bled_Island).jpg","A pletna boat"],
     ["Lake Bled","Bled_Castle.JPG","Bled Castle on the cliff"],
     ["Ljubljana","Zmajski_most_Zmajev_most_(Dragon_Bridge),_Ljubljana,_Slovenia_(52190017166).jpg","The Dragon Bridge"],
     ["Ljubljana","Triple_Bridge,_Ljubljana.jpg","Triple Bridge in old town"],
-    ["Zagreb","Roof_of_St,_Mark's_Church,_Zagreb.jpg","St. Mark's Church roof"],
-    ["Split","Peristyle_of_Diocletian's_Palace,_Split_(11908116224).jpg","Diocletian's Palace",true],
+    ["Zagreb","Roof_of_St,_Mark's_Church,_Zagreb.jpg","St. Mark's Church roof",true],
+    ["Split","Peristyle_of_Diocletian's_Palace,_Split_(11908116224).jpg","Diocletian's Palace"],
     ["Split","Basement_room_of_Diocletian's_Palace,_barrel_vaulted_ceiling_1.jpg","Palace cellars, a Game of Thrones set"],
-    ["Split","Riva_promenade_in_Split,_Croatia_(48693340418).jpg","The Riva waterfront"],
-    ["Split","Split_Marjan_hill.jpg","Marjan hill above Split"]
+    ["Split","Riva_promenade_in_Split,_Croatia_(48693340418).jpg","The Riva waterfront",true],
+    ["Split","Split_Marjan_hill.jpg","Marjan hill above Split",true]
    ]},
  { id:"opt4", num:"ROUTE 04", name:"Dublin & Edinburgh", sub:"Ireland and Scotland",
    chips:["48 to 52°F","About 7 hr nonstop","$4,100 to $4,600","1 hr flight between"],
@@ -318,18 +318,18 @@ const ROUTES = [
    pros:["Shortest flight, and it's nonstop from Cleveland","No language barrier","Ghost tours and castles are great for a teen"],
    cons:["Rain and wind are likely","Needs a flight between cities, which breaks our rule","Over the $4,000 cap at the low end"],
    photos:[
-    ["Dublin","Dublin,_Ireland_-_Kilmainham_Gaol_-_Walkway_and_Staircase.jpg","Inside Kilmainham Gaol",true],
+    ["Dublin","Dublin,_Ireland_-_Kilmainham_Gaol_-_Walkway_and_Staircase.jpg","Inside Kilmainham Gaol"],
     ["Dublin","Trinity_College,_Dublin,_Ireland_(Front_Square).jpg","Trinity College"],
     ["Dublin","Dublin_Trinity_College_Library_Long_Room_01.jpg","The Long Room library"],
     ["Howth","Howth_Cliff_Walk.jpg","Howth cliff walk"],
     ["Dublin","Dublin_-_The_Temple_Bar,_Dublin_-_20191126161201.jpg","Temple Bar"],
     ["Dublin","Ha'penny_Bridge_-_Dublin.jpg","Ha'penny Bridge"],
-    ["Edinburgh","Castlerock,_Edinburgh_Castle,_Scotland.jpg","Edinburgh Castle on Castle Rock",true],
+    ["Edinburgh","Castlerock,_Edinburgh_Castle,_Scotland.jpg","Edinburgh Castle on Castle Rock"],
     ["Edinburgh","The_Royal_Mile,_Edinburgh,_Scotland.jpg","The Royal Mile"],
     ["Edinburgh","Edinburgh_valuts_1.jpg","The underground vaults"],
     ["Edinburgh","Edinburgh_-_View_from_Arthur's_Seat_-_Edinburgh_Castle_-_panoramio.jpg","View from Arthur's Seat"],
-    ["Highlands","Glen_Coe.jpg","Glen Coe in the Highlands"],
-    ["Edinburgh","Edinburgh_Night_Panorama_from_Calton_Hill.jpg","Edinburgh at night from Calton Hill"]
+    ["Highlands","Glen_Coe.jpg","Glen Coe in the Highlands",true],
+    ["Edinburgh","Edinburgh_Night_Panorama_from_Calton_Hill.jpg","Edinburgh at night from Calton Hill",true]
    ]}
 ];
 
