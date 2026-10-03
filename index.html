@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Europe Spring Break 2027</title>
+<meta name="description" content="Four route options for our March 2027 family trip, with photos of every stop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Layout: departures board header, compare table, then one long section per route with plan on the left and photo wall below. */
+:root{
+  --bg:#f3f5f8; --surface:#ffffff; --ink:#14213a; --muted:#56637a; --line:#d8dee8;
+  --rail:#163a6b; --signal:#f2b705; --signal-ink:#1d1600; --good:#1d7a4a; --warn:#a4560c;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d1422; --surface:#151f31; --ink:#e8edf6; --muted:#9daac0; --line:#26344c;
+    --rail:#8db4ec; --signal:#f5c431; --signal-ink:#1d1600; --good:#5fcf93; --warn:#f0a65a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1422; --surface:#151f31; --ink:#e8edf6; --muted:#9daac0; --line:#26344c;
+  --rail:#8db4ec; --signal:#f5c431; --signal-ink:#1d1600; --good:#5fcf93; --warn:#f0a65a;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--body)}
+img{max-width:100%;display:block}
+a{color:var(--rail)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--signal);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--display);line-height:1.1;text-wrap:balance;margin:0}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* Header board */
+header.board{background:#0f1c33;color:#eef3fb;padding-block:44px 36px;padding-top:calc(44px + env(safe-area-inset-top,0px))}
+header.board .eyebrow{color:#9fb3d4}
+header.board h1{font-size:clamp(34px,6vw,64px);font-weight:800;margin-top:10px;letter-spacing:-.01em}
+header.board p{max-width:62ch;color:#c9d5ea;margin:14px 0 0}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.fact{font:500 14px/1 var(--mono);padding:10px 12px;border:1px solid #2b4168;border-radius:6px;color:#eef3fb}
+.fact b{color:#f5c431;font-weight:500}
+
+/* Sticky route nav */
+nav.routes{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+nav.routes .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+nav.routes a{flex:0 0 auto;text-decoration:none;color:var(--ink);font:600 15px/1 var(--body);padding:9px 14px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+nav.routes a span{font-family:var(--mono);font-size:12px;color:var(--muted);margin-right:6px}
+
+section{padding-block:44px}
+.section-head{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.section-head h2{font-size:clamp(26px,3.6vw,38px);font-weight:700}
+
+/* Compare table */
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:15px}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 12px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.route{font-weight:700}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tag{display:inline-block;font:600 12px/1 var(--body);padding:4px 8px;border-radius:4px;margin-top:6px}
+.tag.ok{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.tag.over{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+
+/* Heads up list */
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+.note h3{font-size:18px;margin-bottom:6px}
+.note p{margin:0;color:var(--muted);font-size:16px}
+.note .which{font:500 12px/1 var(--mono);color:var(--warn);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:8px}
+
+/* Route sections */
+.route-sec{border-top:1px solid var(--line)}
+.route-top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:24px}
+.route-top h2{font-size:clamp(28px,4.4vw,46px);font-weight:800}
+.route-num{font:500 13px/1 var(--mono);background:var(--signal);color:var(--signal-ink);padding:6px 9px;border-radius:4px;display:inline-block;margin-bottom:12px;letter-spacing:.06em}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 13px/1 var(--mono);padding:8px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--line);color:var(--ink);font-variant-numeric:tabular-nums}
+.plan{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px;margin-bottom:28px}
+@media (max-width:820px){.plan{grid-template-columns:1fr}}
+.legs{display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.leg{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;padding:16px 18px;border-bottom:1px dashed var(--line)}
+.leg:last-child{border-bottom:0}
+.leg .days{font:500 13px/1.3 var(--mono);color:var(--muted);padding-top:3px}
+.leg h3{font-size:19px;margin-bottom:6px}
+.leg ul{margin:0;padding-left:18px;color:var(--ink)}
+.leg li{margin:2px 0}
+.leg.train{background:color-mix(in srgb,var(--signal) 10%,transparent)}
+.leg.train h3{font-size:16px;font-family:var(--body);font-weight:700}
+.side{display:flex;flex-direction:column;gap:14px}
+.pc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.pc h3{font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.pc.pro h3{color:var(--good)} .pc.con h3{color:var(--warn)} .pc.mine h3{color:var(--rail)}
+.pc ul{margin:0;padding-left:18px} .pc li{margin:3px 0}
+
+/* Photo wall */
+.gallery-label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:12px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.gallery figure{margin:0;position:relative;border-radius:8px;overflow:hidden;background:var(--line);aspect-ratio:4/3;cursor:zoom-in}
+.gallery figure.wide{grid-column:span 2;aspect-ratio:auto}
+@media (max-width:560px){.gallery{grid-template-columns:1fr 1fr}.gallery figure.wide{grid-column:span 2}}
+@media (max-width:380px){.gallery{grid-template-columns:1fr}.gallery figure.wide{grid-column:span 1}}
+.gallery button{all:unset;display:block;width:100%;height:100%;cursor:zoom-in}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.gallery figure:hover img{transform:scale(1.04)}
+.gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:24px 10px 9px;color:#fff;font:600 14px/1.25 var(--body);background:linear-gradient(transparent,rgba(5,10,20,.82));pointer-events:none}
+.gallery figcaption small{display:block;font:500 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#f5c431;margin-bottom:3px}
+
+/* Lightbox */
+.lb{position:fixed;inset:0;z-index:20;background:rgba(5,9,18,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}
+.lb img{max-height:78vh;width:auto;max-width:100%;border-radius:6px}
+.lb .cap{color:#eef3fb;margin-top:12px;text-align:center;max-width:70ch}
+.lb .cap a{color:#f5c431}
+.lb .bar{display:flex;gap:10px;margin-top:12px}
+.lb button{font:600 15px/1 var(--body);padding:11px 16px;border-radius:6px;border:1px solid #3a4d70;background:#14223b;color:#eef3fb;cursor:pointer}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;list-style:none;padding:0;margin:0}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.steps .when{font:500 12px/1 var(--mono);color:var(--rail);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:8px}
+footer{padding-block:30px 50px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){.gallery img{transition:none}.gallery figure:hover img{transform:none}html{scroll-behavior:auto}}
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:70px}
+</style>
+</head>
+<body>
+
+<header class="board">
+  <div class="wrap">
+    <div class="eyebrow">Family vote by October 31, 2026</div>
+    <h1>Europe Spring Break 2027</h1>
+    <p>Four ways to spend ten days in Europe. Look at the photos, read the plan, and pick the one you want. Tap any photo to see it bigger.</p>
+    <div class="facts">
+      <div class="fact">DATES <b>Mar 19 to 29, 2027</b></div>
+      <div class="fact">TRAVELERS <b>2 adults, 1 teen</b></div>
+      <div class="fact">BUDGET <b>$4,000 total</b></div>
+      <div class="fact">GETTING AROUND <b>Trains and transit only</b></div>
+    </div>
+  </div>
+</header>
+
+<nav class="routes" aria-label="Jump to a route">
+  <div class="wrap">
+    <a href="#compare">Compare</a>
+    <a href="#opt1"><span>01</span>London &amp; Paris</a>
+    <a href="#opt2"><span>02</span>Prague, Vienna &amp; Budapest</a>
+    <a href="#opt3"><span>03</span>Austria, Slovenia &amp; Croatia</a>
+    <a href="#opt4"><span>04</span>Dublin &amp; Edinburgh</a>
+  </div>
+</nav>
+
+<main>
+<section id="compare">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">At a glance</div>
+      <h2>The four routes side by side</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Route</th><th>Late March weather</th><th>Flight from CLE</th><th>Between cities</th><th>Estimated cost</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td class="route">1. London &amp; Paris</td><td class="num">52 to 59°F</td><td class="num">10 to 13 hrs, 1 stop</td><td>Eurostar, about 2 hrs 16 min</td><td class="num">$4,100 to $4,800<br><span class="tag over">Over budget</span></td><td>Famous sights and big museums</td></tr>
+          <tr><td class="route">2. Prague, Vienna &amp; Budapest</td><td class="num">46 to 52°F</td><td class="num">14 to 16 hrs, 1 stop</td><td>Direct trains, 2.5 to 4 hrs</td><td class="num">$3,850 to $4,200<br><span class="tag ok">Best value</span></td><td>Castles, hot springs, three countries</td></tr>
+          <tr><td class="route">3. Austria, Slovenia &amp; Croatia</td><td class="num">58 to 63°F on the coast</td><td class="num">12 to 14 hrs, 1 stop</td><td>Trains, 2.5 to 8 hrs</td><td class="num">$3,950 to $4,500<br><span class="tag over">May go over</span></td><td>Lakes, mountains, and the sea</td></tr>
+          <tr><td class="route">4. Dublin &amp; Edinburgh</td><td class="num">48 to 52°F</td><td class="num">About 7 hrs nonstop</td><td>1 hr flight (see note)</td><td class="num">$4,100 to $4,600<br><span class="tag over">Over budget</span></td><td>Short flight, castles, ghost tours</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="heads-up" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Fact check on the pitch</div>
+      <h2>Things to know before you vote</h2>
+    </div>
+    <div class="notes">
+      <div class="note"><span class="which">Route 3</span><h3>The Croatia train is a full day</h3><p>Zagreb to Split runs about one direct day train in spring, and it takes close to 8 hours. Add the 6 hour Vienna to Ljubljana train and you spend two days of ten on trains.</p></div>
+      <div class="note"><span class="which">Route 3</span><h3>Only the coast is warm</h3><p>The 58 to 63°F range is for Split. Vienna and Lake Bled in late March feel more like Route 2, so pack the same warm layers.</p></div>
+      <div class="note"><span class="which">Route 4</span><h3>It breaks the no flights rule</h3><p>Dublin to Edinburgh is a flight in this plan. You can do it by ferry and train instead, but that eats most of a day.</p></div>
+      <div class="note"><span class="which">Routes 1, 3, 4</span><h3>The budget is already tight</h3><p>Three of the four routes start at or over $4,000 by the pitch's own numbers. Route 2 is the only one with real room to spare.</p></div>
+      <div class="note"><span class="which">Route 4 (good news)</span><h3>The Aer Lingus nonstop is still running</h3><p>Aer Lingus cut three US routes to Dublin in 2026, but Cleveland was not one of them. Check the March 2027 schedule when fares open.</p></div>
+    </div>
+  </div>
+</section>
+
+<div id="routes"></div>
+</main>
+
+<section id="next" class="route-sec">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">After we pick</div>
+      <h2>Booking plan</h2>
+    </div>
+    <ol class="steps">
+      <li><span class="when">By Oct 31, 2026</span>Pick our route as a family.</li>
+      <li><span class="when">Nov 2026</span>Set Google Flights alerts. Book when fares hit $700 or less per person.</li>
+      <li><span class="when">Dec 2026</span>Reserve refundable two bedroom apartments with kitchens.</li>
+      <li><span class="when">Jan 2027</span>Book the train tickets between cities.</li>
+      <li><span class="when">Feb 2027</span>Book timed tickets for big sights, museums, and baths.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Photos from Wikimedia Commons contributors. Tap a photo, then "Photo source" to see who took it and its license. Prices and weather are estimates from our planning pitch.</div>
+</footer>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <img id="lb-img" alt="">
+  <div class="cap" id="lb-cap"></div>
+  <div class="bar">
+    <button type="button" id="lb-prev">Previous</button>
+    <button type="button" id="lb-close">Close</button>
+    <button type="button" id="lb-next">Next</button>
+  </div>
+</div>
+
+<script>
+const C = "https://commons.wikimedia.org/wiki/";
+const ROUTES = [
+ { id:"opt1", num:"ROUTE 01", name:"London & Paris", sub:"Western Europe classic",
+   chips:["52 to 59°F","10 to 13 hr flight","$4,100 to $4,800","Eurostar 2 hr 16 min"],
+   legs:[
+    {days:"Days 1 to 4", title:"London, England", items:["Big Ben and the Houses of Parliament","Street food at Borough Market","City views from the Horizon 22 deck (free, book ahead)","Free museums: British Museum and Natural History Museum"]},
+    {days:"Day 5", title:"Eurostar from St Pancras to Paris Gare du Nord", train:true, items:["About 2 hours 16 minutes, city center to city center"]},
+    {days:"Days 6 to 9", title:"Paris, France", items:["Eiffel Tower lights at night","Walking tour of Montmartre","The Paris Catacombs underground","The Louvre, plus a day trip to Versailles"]}
+   ],
+   pros:["Most famous sights of any route","Easiest trains and subways","No language worries in London"],
+   cons:["Most expensive places to stay","Over the $4,000 cap even at the low end"],
+   photos:[
+    ["London","Big_Ben_%26_Houses_of_Parliament_(Along_The_River_Thames).jpg","Big Ben and Parliament on the Thames",true],
+    ["London","Big_Ben_and_Westminster_Bridge_at_night.jpg","Westminster Bridge at night"],
+    ["London","Fruit_and_Vegetable_Stall,_Borough_Market,_London_SE1_-_geograph.org.uk_-_4725576.jpg","Food stalls at Borough Market"],
+    ["London","%22The_Shard%22_from_Horizon_22._Bishopsgate_London.jpg","The view from Horizon 22"],
+    ["London","British_Museum_Great_Court,_London,_UK_-_Diliff.jpg","British Museum Great Court"],
+    ["London","Hintze_Hall_from_steps_with_whale.jpg","Blue whale at the Natural History Museum"],
+    ["Train","Eurostar_at_St_Pancras_railway_station.jpg","Eurostar at St Pancras"],
+    ["Paris","1000_Eiffel_tower_night_illumination_by_Pierre_Bideau_in_Paris_Photo_by_Giles_Laurent.jpg","Eiffel Tower lit up at night",true],
+    ["Paris","Eiffel_Tower,_view_from_the_Trocadero,_1_July_2008.jpg","Eiffel Tower from Trocadéro"],
+    ["Paris","Basilique_du_Sacr%C3%A9-C%C5%93ur_de_Montmartre_-_Paris_-_GT-01_-_2024.jpg","Sacré Cœur on top of Montmartre"],
+    ["Paris","Catacombes_de_Paris_edit.jpg","Inside the Paris Catacombs"],
+    ["Paris","Louvre_Pyramid_(Unsplash).jpg","The Louvre pyramid"],
+    ["Versailles","Chateau_Versailles_Galerie_des_Glaces.jpg","Hall of Mirrors at Versailles"]
+   ]},
+ { id:"opt2", num:"ROUTE 02", name:"Prague, Vienna & Budapest", sub:"Central Europe, three countries",
+   chips:["46 to 52°F","14 to 16 hr flight","$3,850 to $4,200","Trains 2.5 to 4 hr"],
+   legs:[
+    {days:"Days 1 to 3", title:"Prague, Czech Republic", items:["Old Town Square and the Charles Bridge","Prague Castle and the walk along the Vltava River","Evening ghost tour through the old alleys"]},
+    {days:"Day 4", title:"Train to Vienna", train:true, items:["About 4 hours, direct"]},
+    {days:"Days 4 to 6", title:"Vienna, Austria", items:["Schönbrunn Palace and St. Stephen's Cathedral","Real Wiener Schnitzel at a classic café","The giant Ferris wheel at Prater park"]},
+    {days:"Day 7", title:"Train to Budapest", train:true, items:["About 2.5 hours, direct"]},
+    {days:"Days 7 to 9", title:"Budapest, Hungary", items:["Soak at the outdoor Széchenyi Thermal Baths","The Hungarian Parliament Building","Danube boat ride at night and the ruin bar district"]}
+   ],
+   pros:["Your money goes the furthest here","Three countries, all linked by easy trains","Hot outdoor baths feel great in cold weather"],
+   cons:["Coldest route, so winter layers are a must","Longest flight time from Cleveland"],
+   photos:[
+    ["Prague","Prag,_Teynkirche_--_2019_--_6584.jpg","Týn Church over Old Town Square",true],
+    ["Prague","Charles_Bridge_(Karl%C5%AFv_most),_Vltava_River,_Prague,_2015.jpg","Charles Bridge on the Vltava"],
+    ["Prague","The_Castle_and_Charles_Bridge,_Prague_-_7982.jpg","Prague Castle above the river"],
+    ["Prague","Prague_Vltava_pano_-_Oct_2010.jpg","The Vltava riverfront"],
+    ["Prague","Golden_Lane_Prague_Castle_1.JPG","Golden Lane inside the castle"],
+    ["Vienna","Sch%C3%B6nbrunn_Palace,_seen_from_behind_the_Neptune_fountain_(Vienna,_Austria).jpg","Schönbrunn Palace",true],
+    ["Vienna","Wien,_Stephansdom_--_2018_--_3060.jpg","St. Stephen's Cathedral"],
+    ["Vienna","Wiener_Riesenrad_im_Prater_04.jpg","The Ferris wheel at Prater"],
+    ["Vienna","Wiener_Schnitzel_vom_Kalb_im_Bellaria_Wien.jpg","Wiener Schnitzel"],
+    ["Budapest","Budapest_Sz%C3%A9chenyi_Baths_R01.jpg","Széchenyi Thermal Baths",true],
+    ["Budapest","Hungarian_Parliament_Building_at_night,_Hungary-2605_(7814848786).jpg","Parliament at night"],
+    ["Budapest","Sz%C3%A9chenyi_Chain_Bridge_in_Budapest_at_night.jpg","Chain Bridge over the Danube"],
+    ["Budapest","Budapest_-_Szimpla_Kert_(26688416599).jpg","Szimpla Kert ruin bar"]
+   ]},
+ { id:"opt3", num:"ROUTE 03 · MOM'S PICK", name:"Austria, Slovenia & Coastal Croatia", sub:"Cities, alpine lakes, and the sea",
+   chips:["58 to 63°F on the coast","12 to 14 hr flight","$3,950 to $4,500","Trains 2.5 to 8 hr"],
+   legs:[
+    {days:"Days 1 to 3", title:"Vienna, Austria", items:["Palaces and old Vienna cafés","An afternoon of rides at Prater park"]},
+    {days:"Day 4", title:"Train to Ljubljana", train:true, items:["About 6 hours, one direct train a day"]},
+    {days:"Days 4 to 5", title:"Ljubljana and Lake Bled, Slovenia", items:["Row a wooden pletna boat to the island church","Climb up to Bled Castle on the cliff","Cross the Dragon Bridge in Ljubljana"]},
+    {days:"Day 6", title:"Train to Zagreb, then on to Split", train:true, items:["Ljubljana to Zagreb about 2.5 hours","Zagreb to Split close to 8 hours"]},
+    {days:"Days 6 to 9", title:"Zagreb and Split, Croatia", items:["Diocletian's Palace Roman ruins and Game of Thrones filming spots","Walks along the sunny waterfront","Fresh Adriatic seafood"]}
+   ],
+   pros:["The most variety: city, lake, and sea","Warmest weather of all four, on the coast","Lake Bled is a standout for photos"],
+   cons:["Two long train days (6 and 8 hours)","Vienna and Bled are still cold in March","Flying home from Split may mean fewer flight choices"],
+   photos:[
+    ["Vienna","Hofburg_Imperial_Palace,_Vienna.jpg","Hofburg Palace"],
+    ["Vienna","Caf%C3%A9_Central_interior,_Vienna.jpg","Inside Café Central"],
+    ["Vienna","Wien,_Prater,_Riesenrad_--_2018_--_3165.jpg","Prater park"],
+    ["Lake Bled","Bled_island,_bled,_slovenia.jpg","The island church on Lake Bled",true],
+    ["Lake Bled","Pletna_(traditional_wooden_boat_used_for_transportation_to_Bled_Island).jpg","A pletna boat"],
+    ["Lake Bled","Bled_Castle.JPG","Bled Castle on the cliff"],
+    ["Ljubljana","Zmajski_most_Zmajev_most_(Dragon_Bridge),_Ljubljana,_Slovenia_(52190017166).jpg","The Dragon Bridge"],
+    ["Ljubljana","Triple_Bridge,_Ljubljana.jpg","Triple Bridge in old town"],
+    ["Zagreb","Roof_of_St,_Mark's_Church,_Zagreb.jpg","St. Mark's Church roof"],
+    ["Split","Peristyle_of_Diocletian's_Palace,_Split_(11908116224).jpg","Diocletian's Palace",true],
+    ["Split","Basement_room_of_Diocletian's_Palace,_barrel_vaulted_ceiling_1.jpg","Palace cellars, a Game of Thrones set"],
+    ["Split","Riva_promenade_in_Split,_Croatia_(48693340418).jpg","The Riva waterfront"],
+    ["Split","Split_Marjan_hill.jpg","Marjan hill above Split"]
+   ]},
+ { id:"opt4", num:"ROUTE 04", name:"Dublin & Edinburgh", sub:"Ireland and Scotland",
+   chips:["48 to 52°F","About 7 hr nonstop","$4,100 to $4,600","1 hr flight between"],
+   legs:[
+    {days:"Days 1 to 4", title:"Dublin, Ireland", items:["Tour Kilmainham Gaol, the old prison","Trinity College and its old library","Cliff walk in the seaside village of Howth","Live street music in the city center"]},
+    {days:"Day 5", title:"Dublin to Edinburgh", train:true, items:["1 hour flight (ferry and train is possible but takes most of a day)"]},
+    {days:"Days 6 to 9", title:"Edinburgh, Scotland", items:["Walk the Royal Mile up to Edinburgh Castle on an old volcano","Underground vault ghost tour","Day trip into the Scottish Highlands"]}
+   ],
+   pros:["Shortest flight, and it's nonstop from Cleveland","No language barrier","Ghost tours and castles are great for a teen"],
+   cons:["Rain and wind are likely","Needs a flight between cities, which breaks our rule","Over the $4,000 cap at the low end"],
+   photos:[
+    ["Dublin","Dublin,_Ireland_-_Kilmainham_Gaol_-_Walkway_and_Staircase.jpg","Inside Kilmainham Gaol",true],
+    ["Dublin","Trinity_College,_Dublin,_Ireland_(Front_Square).jpg","Trinity College"],
+    ["Dublin","Dublin_Trinity_College_Library_Long_Room_01.jpg","The Long Room library"],
+    ["Howth","Howth_Cliff_Walk.jpg","Howth cliff walk"],
+    ["Dublin","Dublin_-_The_Temple_Bar,_Dublin_-_20191126161201.jpg","Temple Bar"],
+    ["Dublin","Ha'penny_Bridge_-_Dublin.jpg","Ha'penny Bridge"],
+    ["Edinburgh","Castlerock,_Edinburgh_Castle,_Scotland.jpg","Edinburgh Castle on Castle Rock",true],
+    ["Edinburgh","The_Royal_Mile,_Edinburgh,_Scotland.jpg","The Royal Mile"],
+    ["Edinburgh","Edinburgh_valuts_1.jpg","The underground vaults"],
+    ["Edinburgh","Edinburgh_-_View_from_Arthur's_Seat_-_Edinburgh_Castle_-_panoramio.jpg","View from Arthur's Seat"],
+    ["Highlands","Glen_Coe.jpg","Glen Coe in the Highlands"],
+    ["Edinburgh","Edinburgh_Night_Panorama_from_Calton_Hill.jpg","Edinburgh at night from Calton Hill"]
+   ]}
+];
+
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const src = (f,w) => C + "Special:FilePath/" + f + "?width=" + w;
+const all = [];
+const host = document.getElementById("routes");
+
+ROUTES.forEach(r => {
+  const sec = document.createElement("section");
+  sec.id = r.id; sec.className = "route-sec";
+  const legs = r.legs.map(l => `<div class="leg${l.train?" train":""}"><div class="days">${esc(l.days)}</div><div><h3>${esc(l.title)}</h3><ul>${l.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div></div>`).join("");
+  const figs = r.photos.map(p => {
+    const i = all.length;
+    all.push({place:p[0], file:p[1], cap:p[2]});
+    return `<figure${p[3]?' class="wide"':''}><button type="button" data-i="${i}" aria-label="Enlarge: ${esc(p[2])}"><img src="${src(p[1], p[3]?1400:800)}" alt="${esc(p[2])}" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('figure').remove()"></button><figcaption><small>${esc(p[0])}</small>${esc(p[2])}</figcaption></figure>`;
+  }).join("");
+  sec.innerHTML = `<div class="wrap">
+    <div class="route-top"><div><span class="route-num">${esc(r.num)}</span><h2>${esc(r.name)}</h2><div class="eyebrow" style="margin-top:8px">${esc(r.sub)}</div></div>
+    <div class="chips">${r.chips.map(c=>`<span class="chip">${esc(c)}</span>`).join("")}</div></div>
+    <div class="plan"><div class="legs">${legs}</div>
+      <div class="side"><div class="pc pro"><h3>Pros</h3><ul>${r.pros.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+      <div class="pc con"><h3>Cons</h3><ul>${r.cons.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div></div></div>
+    <div class="gallery-label"><div class="eyebrow">Photos · ${r.photos.length} sights</div></div>
+    <div class="gallery">${figs}</div></div>`;
+  host.appendChild(sec);
+});
+
+const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap");
+let cur = 0;
+function show(i){
+  cur = (i + all.length) % all.length;
+  const p = all[cur];
+  lbImg.src = src(p.file, 1800); lbImg.alt = p.cap;
+  lbCap.innerHTML = `<strong>${esc(p.place)}:</strong> ${esc(p.cap)} · <a href="${C}File:${p.file}" target="_blank" rel="noopener">Photo source</a>`;
+  lb.hidden = false; document.getElementById("lb-close").focus();
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest(".gallery button"); if (b) show(+b.dataset.i);
+});
+document.getElementById("lb-close").onclick = () => { lb.hidden = true; };
+document.getElementById("lb-prev").onclick = () => show(cur - 1);
+document.getElementById("lb-next").onclick = () => show(cur + 1);
+lb.addEventListener("click", e => { if (e.target === lb) lb.hidden = true; });
+document.addEventListener("keydown", e => {
+  if (lb.hidden) return;
+  if (e.key === "Escape") lb.hidden = true;
+  if (e.key === "ArrowRight") show(cur + 1);
+  if (e.key === "ArrowLeft") show(cur - 1);
+});
+</script>
+</body>
+</html>
